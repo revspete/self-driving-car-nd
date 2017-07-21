@@ -1,6 +1,6 @@
 # **Finding Lane Lines on the Road** 
 
-![Combined Yellow White Mask][test_images_output/combined_yellow_white_mask.png]
+<img src="test_images_output/solid_yellow_lane_left.png" alt="Solid Yellow Lane Left">
 
 ## Overview
 When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
@@ -99,7 +99,7 @@ There are several shortcomings that have been noted for the current pipeline imp
 ### Shadows
 The lane finding pipeline appears to suffer under a shadow in the challenge video as seen below. Investigating change in lighting conditions may highlight a short coming.
 
-<img src="test_images_output/shadow.png" alt="Image With Shadowk">
+<img src="test_images_output/shadow.png" alt="Image With Shadow">
 
 ### Corners and Curves
 The lane fitting is only suited to straight lines, it should be able to fit and predict curves.
