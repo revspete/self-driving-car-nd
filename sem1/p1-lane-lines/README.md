@@ -1,11 +1,8 @@
 # **Finding Lane Lines on the Road** 
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-<img src="examples/laneLines_thirdPass.jpg" width="480" alt="Combined Image" />
+![Combined Yellow White Mask][test_images_output/combined_yellow_white_mask.png]
 
-Overview
----
-
+## Overview
 When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
 
 In this project you will detect lane lines in images using Python and OpenCV.  OpenCV means "Open-Source Computer Vision", which is a package that has many useful tools for analyzing images.  
@@ -34,17 +31,34 @@ def draw_lanes_on(image)
   lanes_image = draw_lines(image, lines)
   return lanes_image
 ```
-A screenshot from each sample video can be seen below for the current pipline:
-![alt text][/test_images_output/solid_white_lane_right.png]
-![alt text][test_images_output/solid_yello_lane_left.png]
-![alt text][test_images_output/challenge_curved_lanes.png]
+The following photos link to the processed videos using the current pipline:
+
+Click on photo to see processed video for the solid right lane video.
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=y4rFJXo27B0
+" target="_blank"><img src="http://img.youtube.com/vi/y4rFJXo27B0/0.jpg" 
+alt="SDC Challenge Video" width="240" height="180" border="10" /></a> 
+
+
+Click on photo to see processed video for the solid right lane video.
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=RRT0ptlltJA
+" target="_blank"><img src="http://img.youtube.com/vi/RRT0ptlltJA/0.jpg" 
+alt="SDC Challenge Video" width="240" height="180" border="10" /></a> 
+
+Click on photo to see processed videos for the challenge.
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=XRVgT-Ude2U
+" target="_blank"><img src="http://img.youtube.com/vi/XRVgT-Ude2U/0.jpg" 
+alt="SDC Challenge Video" width="240" height="180" border="10" /></a>
 
 ### Lane Colour Enhancement
 This process was not initially included, however after attempting the challenge video the pipeline was not robust against yellow, and less robust for yellow or white lanes on light coloured bitumen.
 This process uses a low and high threshold for both white and yellow in the HSV colour space. First the image is converted to HSV, then thresholds applied. 
 
 After some testing with the colour thresholds it was found that other cars, particularly white ones, provide false positives and influence the lines. A strict mask was used to only enhance the yellow and white colour for the immediate road.
-![alt text][test_images_output/combined_yellow_white_mask.png]
+
+<img src="test_images_output/combined_colour_yellow_white_mask.png" alt="Combined Yellow White Mask">
 
 The yellow and white masks are added together and weighted against the original image.
 More time will be spent on adjust the thresholds and weighting to the original image. It is suspected that the polygon mask can be increased, colour thresholds used over a wider band and rather than weighting against the initial image it could be passed directly to the next stage in the pipeline.
@@ -53,7 +67,8 @@ This would reduce some time taken in the pipeline.
 ### Convert image to grayscale
 After the lane colours are enhanced the image is converted to gray scale such the Canny Edge detection can identify edges through pixel intensity.
 at gaussian smoothing and edge detection can be performed.
-![alt text][test_images_output/gray_image.png]
+
+<img src="test_images_output/gray_image.png" alt="Grayscale Image">
 
 ### Gaussian smoothing
 The image is smoothed such that edges are more pronounced and there is less individual pixels or noise in the image.
@@ -63,12 +78,15 @@ The Canny Edge Detection uses rapid changes in gradient represented by brightnes
 
 ### Mask image to get region of interest
 A polygon mask is created using four vertices. These vertices remove features in the environment which may present as distractions from the lanes, for example over head bridges, electricity lines, the horizon, side verges, other lanes etc.
-![alt text][test_images_output/edges_after_mask.png]
+
+<img src="test_images_output/edges_after_mask.png" alt="Edges Image After Mask">
+
 This is performed before the Hough transform to eliminate as many possible false positive lines.
 
 ### Hough Transform to obtain lines
 The Hough Transform can be used to observe lines from  Image Space into the Hough Space by looking at gradients vs intercepts. Any point with intersecting lines in the Hough Space represents a single line in the Image Space.  
 The parameters for the Hough Lines detection have been adjust to filter out as much noise as possible and leave only the lane lines behind for most cases.
+
 ### Process lines – Filtering, Averaging, Extrapolation
 Once the lines have been identified, they are separated into left and right lanes depending on their gradient/slopes. Each lane is then processed separately.
 First the points for each lane go through a rejection process based on the mean and how many standard deviations the points are away from the mean. Once outliers are rejected, the gradient and intercept are averaged. Using the average slope, intercept, minimum and maximum y values, the x coordinates are extrapolated. These coordinates are then added to a history array. 
@@ -77,23 +95,29 @@ More experimentation is required, currently a history of 15 values is used. Othe
 
 ## Potential shortcomings of the current pipeline
 There are several shortcomings that have been noted for the current pipeline implementation.
+
 ### Shadows
 The lane finding pipeline appears to suffer under a shadow in the challenge video as seen below. Investigating change in lighting conditions may highlight a short coming.
-![alt text][test_images_output/shadow.png]
+
+<img src="test_images_output/shadow.png" alt="Image With Shadowk">
 
 ### Corners and Curves
 The lane fitting is only suited to straight lines, it should be able to fit and predict curves.
+
 ### Other Cars In Front
 If other cars were directly in front of the camera it may limit the use of the lane finding pipeline.
 
 ## Improvements to your pipeline
 ### Straight lines to Curves
 The pipeline is restricted to extrapolating linear lanes. The pipeline should enable polynomial lines to be fitted to the lanes such that corners could be predicted.
+
 ### Filtering
 The filtering method with currently used is not ideal. It’s been observed that the sample size for the number of lines detected is very low which will affect the confidence of the result. Other techniques will be considered to improve the filtering.
+
 ### History
 The history of the past points will need further investigation to determine how much is required. Currently it is assumed that if 30 frames can be processed in a second, a 15 frame history may have half a second lag.
 It also appears that until the history array is full there are issues in accuracy..
+
 ### Colour separation
 It is thought that more focus on colour enhancement / separation could improve results further. However, during tests as the enhancement of the colour increased and opacity of original image decreased the results worsened. Further investigation required.
 
