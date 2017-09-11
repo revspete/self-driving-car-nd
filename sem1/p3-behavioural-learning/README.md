@@ -27,7 +27,7 @@ The goals of this project are the following:
 
 [data_visualisation]: ./images/data_visualisation.png "Data Processing"
 [model_architecture]: ./images/nvidia_conv_network.JPG "Nvidia Model Architecture"
-[learning_graph]: ./images/nvidia_conv_network.jpg "Learning Loss Graph"
+[learning_graph]: ./images/learning_graph.png "Learning Loss Graph"
 [centre]: ./images/centre.jpg "Centre Image"
 [left]: ./images/left.jpg "Left Image"
 [right]: ./images/right.jpg "Right Image"
@@ -75,47 +75,34 @@ The model was trained and validated on different data sets to ensure that the mo
 #### 3. Model parameter tuning
 
 The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 118). Epoch of 10 was typically used and a batch size of 100. The batch size increases intraining due to data augmention within the model pipeline. 
-
-Epoch 1/12
-242/241  - 188s - loss: 0.0401 - val_loss: 0.0286
-Epoch 2/12
-242/241  - 178s - loss: 0.0280 - val_loss: 0.0238
-Epoch 3/12
-242/241  - 191s - loss: 0.0236 - val_loss: 0.0238
-Epoch 4/12
-242/241  - 159s - loss: 0.0217 - val_loss: 0.0240
-Epoch 5/12
-242/241  - 123s - loss: 0.0205 - val_loss: 0.0200
-Epoch 6/12
-242/241  - 167s - loss: 0.0191 - val_loss: 0.0203
-Epoch 7/12
-242/241  - 174s - loss: 0.0196 - val_loss: 0.0225
-Epoch 8/12
-242/241  - 123s - loss: 0.0178 - val_loss: 0.0189
-Epoch 9/12
-242/241  - 115s - loss: 0.0178 - val_loss: 0.0184
-Epoch 10/12
-242/241  - 114s - loss: 0.0170 - val_loss: 0.0166
-Epoch 11/12
-242/241  - 115s - loss: 0.0163 - val_loss: 0.0167
-Epoch 12/12
-242/241  - 125s - loss: 0.0175 - val_loss: 0.0186
+```sh
+Epoch 1/12 242/241  - 188s - loss: 0.0401 - val_loss: 0.0286
+Epoch 2/12 242/241  - 178s - loss: 0.0280 - val_loss: 0.0238
+Epoch 3/12 242/241  - 191s - loss: 0.0236 - val_loss: 0.0238
+Epoch 4/12 242/241  - 159s - loss: 0.0217 - val_loss: 0.0240
+Epoch 5/12 242/241  - 123s - loss: 0.0205 - val_loss: 0.0200
+Epoch 6/12 242/241  - 167s - loss: 0.0191 - val_loss: 0.0203
+Epoch 7/12 242/241  - 174s - loss: 0.0196 - val_loss: 0.0225
+Epoch 8/12 242/241  - 123s - loss: 0.0178 - val_loss: 0.0189
+Epoch 9/12 242/241  - 115s - loss: 0.0178 - val_loss: 0.0184
+Epoch 10/12 242/241  - 114s - loss: 0.0170 - val_loss: 0.0166
+Epoch 11/12 242/241  - 115s - loss: 0.0163 - val_loss: 0.0167
+Epoch 12/12 242/241  - 125s - loss: 0.0175 - val_loss: 0.0186
+```
 
 #### 4. Appropriate training data
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road, as well as driving straight on either side of the road. By driving straight toward either edge of the road helped to prevent occillations around the roads midpoint.
 
 It was interesting to note that when using a small training set with carefully selected data, a much lower mse it acheived, however running the simulation would perform worse, i.e.
+```sh
 Note: new training data set collected and trained
-73/72 [==============================] - 74s - loss: 0.0180 - val_loss: 0.0065
-Epoch 2/5
-73/72 [==============================] - 67s - loss: 0.0047 - val_loss: 0.0040
-Epoch 3/5
-73/72 [==============================] - 56s - loss: 0.0033 - val_loss: 0.0034
-Epoch 4/5
-73/72 [==============================] - 54s - loss: 0.0031 - val_loss: 0.0028
-Epoch 5/5
-73/72 [==============================] - 55s - loss: 0.0027 - val_loss: 0.0028
+Epoch 1/5 73/72  - 74s - loss: 0.0180 - val_loss: 0.0065
+Epoch 2/5 73/72  - 67s - loss: 0.0047 - val_loss: 0.0040
+Epoch 3/5 73/72  - 56s - loss: 0.0033 - val_loss: 0.0034
+Epoch 4/5 73/72  - 54s - loss: 0.0031 - val_loss: 0.0028
+Epoch 5/5 73/72  - 55s - loss: 0.0027 - val_loss: 0.0028
+```
 
 Following this result the original data set was used with additional collection. Read on for more details on training data collection.
 
@@ -138,7 +125,7 @@ There was no noticeable difference with the training and validation accuracy how
 The next step was adding left and right images from the simulation car for recovery. These images provide more information on the cars state and and can provide an added effect in the steering angle. This was found to to significant increase the ability to steer away from edges. Initialy a steering corection componentent of 0.5 was used however the with more testing and increased car speed this was reduced to 0.1 to prevent over steering. 
 
 To combat the overfitting and improve the model I implemented a different model architecture as used by Nvidia, the model architect can be seen in the image below. This model did not overfit, this is likely due to the max pooling layer used. Here is a visualization of the Nvidia architecture from http://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf
-![alt text][model_architecture]
+![Model Architecture][model_architecture]
 
 While the model did not show any improvement in training or validation accuracy, there was noticeable improvement in the simulation. Most of the track could be completed, however at times, particularly corners, the car would drive off the track. Other times the car would begin oscillating on a straight road and eventually hit a verge. It was found collecting more runs at different positions on the road significantly reduced oscillations. 
 
@@ -147,43 +134,30 @@ With some more training data the vehicle was able to drive autonomously around t
 #### 2. Final Model Architecture
 
 The final model architecture (model.py lines 100-116) consisted of a convolution neural network with the following layers and layer sizes 
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #
-=================================================================
-cropping2d_1 (Cropping2D)    (None, 73, 320, 3)        0
-_________________________________________________________________
-lambda_1 (Lambda)            (None, 73, 320, 3)        0
-_________________________________________________________________
-conv2d_1 (Conv2D)            (None, 69, 316, 8)        608
-_________________________________________________________________
-conv2d_2 (Conv2D)            (None, 33, 156, 24)       4824
-_________________________________________________________________
-conv2d_3 (Conv2D)            (None, 15, 76, 36)        21636
-_________________________________________________________________
-conv2d_4 (Conv2D)            (None, 6, 36, 48)         43248
-_________________________________________________________________
-conv2d_5 (Conv2D)            (None, 4, 34, 64)         27712
-_________________________________________________________________
-conv2d_6 (Conv2D)            (None, 2, 32, 72)         41544
-_________________________________________________________________
-max_pooling2d_1 (MaxPooling2 (None, 1, 16, 72)         0
-_________________________________________________________________
-flatten_1 (Flatten)          (None, 1152)              0
-_________________________________________________________________
-dense_1 (Dense)              (None, 1000)              1153000
-_________________________________________________________________
-dense_2 (Dense)              (None, 100)               100100
-_________________________________________________________________
-dense_3 (Dense)              (None, 50)                5050
-_________________________________________________________________
-dense_4 (Dense)              (None, 10)                510
-_________________________________________________________________
-dense_5 (Dense)              (None, 1)                 11
-=================================================================
+
+|Layer (type) | Output Shape | Param |
+| ------------- | ------------- | ------------- |
+|cropping2d_1 (Cropping2D) |  (None, 73, 320, 3) | 0|
+|lambda_1 (Lambda) | (None, 73, 320, 3) | 0|
+|conv2d_1 (Conv2D) | (None, 69, 316, 8) | 608|
+|conv2d_2 (Conv2D) | (None, 33, 156, 24) | 4824|
+|conv2d_3 (Conv2D) | (None, 15, 76, 36) | 21636|
+|conv2d_4 (Conv2D) | (None, 6, 36, 48) | 43248|
+|conv2d_5 (Conv2D) | (None, 4, 34, 64) | 27712|
+|conv2d_6 (Conv2D) | (None, 2, 32, 72) | 41544|
+|max_pooling2d_1 (MaxPooling2 (None, 1, 16, 72) | 0|
+|flatten_1 (Flatten) | (None, 1152) | 0|
+|dense_1 (Dense) | (None, 1000) | 1153000|
+|dense_2 (Dense) | (None, 100) | 100100|
+|dense_3 (Dense) | (None, 50) | 5050|
+|dense_4 (Dense) | (None, 10) | 510|
+|dense_5 (Dense) | (None, 1) | 11|
+
 Total params: 1,398,243
+
 Trainable params: 1,398,243
+
 Non-trainable params: 0
-_________________________________________________________________
 
 
 #### 3. Creation of the Training Set & Training Process
@@ -199,7 +173,7 @@ Images showing processing techniques:
 
 I randomly shuffled the data set (model.py, line 75) and put 20% of the data into a validation set (model.py, line 22). A separate test data set was not used as I figured the simulation environment would provide sufficient test data, particularly in the reverse direction and on Track 2. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 5 as evidenced by the graph of learning loss below. I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 10 as evidenced by the graph of learning loss below. I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
 ![alt text][learning_graph]
 
