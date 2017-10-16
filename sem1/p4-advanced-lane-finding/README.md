@@ -221,10 +221,7 @@ The fit from the rectified image has been warped back onto the original image an
 
 A pipeline has been created to take a raw images from a video, find the lane lines and return the lanes image with lane, curvature and position overlays.
 
-Here's some attempts so far:
-Medium Trajectory: https://youtu.be/wulyFSmR5Z8
-Long Trajectory: https://youtu.be/qfFRg9h1f7s
-Short trajectory: https://youtu.be/-GwvK1TGEBQ
+Here's my final output: https://youtu.be/WBJax1T0_6c 
 
 ---
 
