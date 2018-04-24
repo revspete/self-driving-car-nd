@@ -8,4 +8,8 @@ This repository contains all of my project work for Udacity's Self-Driving Car N
 # Projects
 ## Semester 1: Computer Vision and Deep Learning
 * Project 1: Finding Lane Lines 
-* Projecty 2: Traffic Sign Classifier
+* Project 2: Traffic Sign Classifier
+* Project 3: Behavioral Learning
+* Project 4: Advanced Lane Finding
+* Project 5: Vehicle Detection and Tracking
+		
